@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const convertedImage = document.getElementById('convertedImage');
     const originalInfo = document.getElementById('originalInfo');
     const convertedInfo = document.getElementById('convertedInfo');
-    const loadingIndicator = document.getElementById('loadingIndicator');
 
     // Variables
     let jpgFile = null;
@@ -112,8 +111,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Show loading indicator
-        loadingIndicator.classList.remove('hidden');
+        // Disable convert button during conversion
+        convertBtn.disabled = true;
+
+        // Show a notification that conversion is starting
+        showNotification('Converting image...', 'info');
 
         // Create a slight delay to allow UI to update
         setTimeout(() => {
@@ -122,35 +124,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 const img = new Image();
 
                 img.onload = function() {
-                    // Create canvas
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
+                    try {
+                        // Create canvas
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
 
-                    // Draw image on canvas
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
+                        // Draw image on canvas
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
 
-                    // Convert to PNG
-                    canvas.toBlob((blob) => {
-                        // Store PNG blob
-                        pngBlob = blob;
+                        // Convert to PNG
+                        canvas.toBlob((blob) => {
+                            try {
+                                // Store PNG blob
+                                pngBlob = blob;
 
-                        // Create object URL
-                        const url = URL.createObjectURL(blob);
+                                // Create object URL
+                                const url = URL.createObjectURL(blob);
 
-                        // Update preview
-                        convertedImage.src = url;
-                        convertedInfo.textContent = `Converted PNG (${formatFileSize(blob.size)}, ${img.width}×${img.height}px)`;
+                                // Update preview
+                                convertedImage.src = url;
+                                convertedInfo.textContent = `Converted PNG (${formatFileSize(blob.size)}, ${img.width}×${img.height}px)`;
 
-                        // Show download button
-                        downloadBtn.classList.remove('hidden');
+                                // Show download button
+                                downloadBtn.classList.remove('hidden');
 
-                        // Hide loading indicator
-                        loadingIndicator.classList.add('hidden');
+                                // Re-enable convert button
+                                convertBtn.disabled = false;
 
-                        showNotification('Image converted to PNG successfully!', 'success');
-                    }, 'image/png');
+                                showNotification('Image converted to PNG successfully!', 'success');
+                            } catch (error) {
+                                // Re-enable convert button
+                                convertBtn.disabled = false;
+                                showNotification('Error processing converted image: ' + error.message, 'error');
+                            }
+                        }, 'image/png');
+                    } catch (error) {
+                        // Re-enable convert button
+                        convertBtn.disabled = false;
+                        showNotification('Error creating canvas: ' + error.message, 'error');
+                    }
+                };
+
+                // Add error handler for image loading
+                img.onerror = function() {
+                    // Re-enable convert button
+                    convertBtn.disabled = false;
+                    showNotification('Error loading image for conversion', 'error');
                 };
 
                 // Load image from file
@@ -158,10 +179,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 reader.onload = function(e) {
                     img.src = e.target.result;
                 };
+                reader.onerror = function() {
+                    // Re-enable convert button
+                    convertBtn.disabled = false;
+                    showNotification('Error reading the image file', 'error');
+                };
                 reader.readAsDataURL(jpgFile);
 
             } catch (error) {
-                loadingIndicator.classList.add('hidden');
+                // Re-enable convert button
+                convertBtn.disabled = false;
                 showNotification('Error converting image: ' + error.message, 'error');
             }
         }, 100);

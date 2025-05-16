@@ -11,18 +11,24 @@
 <body>
     <header class="site-header">
         <div class="container">
-            <div class="logo">
-                <a href="../">Latest<span>Online</span>Tools</a>
+            <div class="header-left">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../assets/images/favicon.svg" alt="Latest Online Tools Logo" class="brand-logo">
+                        <span>LatestOnlineTools</span>
+                    </a>
+                </div>
+                <!-- Search removed -->
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="../#tools">Tools</a></li>
-                    <li><a href="../#latest">Latest</a></li>
-                    <li><a href="../#about">About</a></li>
-                    <li><a href="../#contact">Contact</a></li>
+                    <li><a href="../index.html#tools">Tools</a></li>
+                    <li><a href="../index.html#latest">Latest</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
                 </ul>
             </nav>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+            <button type="button" class="mobile-menu-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -45,7 +51,7 @@
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
                         <p>Drag & Drop your JPG image here</p>
                         <p>or</p>
-                        <button id="selectFileBtn" class="btn">Select File</button>
+                        <button type="button" id="selectFileBtn" class="btn">Select File</button>
                         <label for="fileInput" class="visually-hidden">Choose JPG file</label>
                         <input type="file" id="fileInput" accept=".jpg,.jpeg" class="hidden-input" title="Choose JPG file">
                     </div>
@@ -73,10 +79,7 @@
                         <button type="button" id="downloadBtn" class="btn success-btn hidden">Download PNG</button>
                     </div>
 
-                    <div id="loadingIndicator" class="loading-indicator hidden">
-                        <div class="spinner"></div>
-                        <p>Converting...</p>
-                    </div>
+                    <!-- Loading indicator removed -->
                 </div>
 
                 <div class="how-to-use">
@@ -95,7 +98,39 @@
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../index.html#tools">Tools</a></li>
+                        <li><a href="../index.html#latest">Latest</a></li>
+                        <li><a href="../index.html#about">About</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
                 <p>&copy; <span id="current-year">2023</span> Latest Online Tools. All rights reserved.</p>
+                <p><a href="https://github.com/yourusername/latestonlinetools" target="_blank" rel="noopener">View on GitHub</a></p>
             </div>
         </div>
     </footer>
@@ -117,6 +152,8 @@
                 menuToggle.classList.toggle('active');
             });
         }
+
+        // Search functionality removed
     </script>
 </body>
 </html>
